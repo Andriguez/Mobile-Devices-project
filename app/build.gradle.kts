@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.taskmanager"
+    namespace = "com.example.task_manager_app"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.example.taskmanager"
+        applicationId = "com.example.task_manager_app"
         minSdk = 28
         targetSdk = 36
         versionCode = 1
