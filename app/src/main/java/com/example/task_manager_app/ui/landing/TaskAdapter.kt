@@ -1,4 +1,4 @@
-package com.example.task_manager_app
+package com.example.task_manager_app.ui.landing
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.task_manager_app.R
+import com.example.task_manager_app.model.Task
 
 class TaskAdapter(
     private var tasks: List<Task>,
@@ -17,6 +19,7 @@ class TaskAdapter(
         tasks = newTasks
         notifyDataSetChanged()
     }
+
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.task_title)
         val description: TextView = itemView.findViewById(R.id.task_description)

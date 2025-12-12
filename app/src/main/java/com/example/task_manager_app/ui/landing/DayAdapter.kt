@@ -1,10 +1,12 @@
-package com.example.task_manager_app
+package com.example.task_manager_app.ui.landing
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.task_manager_app.R
+import com.example.task_manager_app.model.DayItem
 import java.time.LocalDate
 
 class DayAdapter(

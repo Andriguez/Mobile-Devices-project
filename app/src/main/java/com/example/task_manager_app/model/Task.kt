@@ -1,4 +1,4 @@
-package com.example.task_manager_app
+package com.example.task_manager_app.model
 
 import java.time.LocalDate
 import java.time.LocalTime
