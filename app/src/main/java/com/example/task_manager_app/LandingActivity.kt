@@ -1,4 +1,4 @@
-package com.example.taskmanager
+package com.example.task_manager_app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

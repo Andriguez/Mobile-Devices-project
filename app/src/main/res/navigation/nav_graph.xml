@@ -8,7 +8,7 @@
     <!-- Ce fragment affichera votre liste de tâches -->
     <fragment
         android:id="@+id/TaskListFragment"
-        android:name="com.example.taskmanager.TaskListFragment"
+        android:name="com.example.task_manager_app.TaskListFragment"
         android:label="Liste des Tâches"
         tools:layout="@layout/fragment_task_list" />
 
