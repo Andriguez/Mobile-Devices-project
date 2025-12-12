@@ -1,22 +1,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dayRoot"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="70dp"
+    android:layout_height="80dp"
     android:orientation="vertical"
-    android:padding="8dp"
+    android:gravity="center"
+    android:padding="12dp"
     android:layout_margin="4dp"
     android:background="@drawable/day_bg_normal">
 
     <TextView
-        android:id="@+id/textDay"
-        android:textStyle="bold"
-        android:textSize="14sp"
+        android:id="@+id/textTodayLabel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/today"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:textColor="#6200EE"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/textDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textAlignment="center"/>
 
     <TextView
         android:id="@+id/textDate"
-        android:textSize="12sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textAlignment="center"/>
 </LinearLayout>

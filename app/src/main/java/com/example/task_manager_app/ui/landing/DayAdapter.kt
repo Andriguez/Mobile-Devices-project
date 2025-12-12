@@ -25,6 +25,8 @@ class DayAdapter(
         val root: View = view.findViewById(R.id.dayRoot)
         val day: TextView = view.findViewById(R.id.textDay)
         val date: TextView = view.findViewById(R.id.textDate)
+        val todayLabel: TextView = view.findViewById(R.id.textTodayLabel)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
@@ -36,6 +38,13 @@ class DayAdapter(
     override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
         val dayItem = days[position]
         val localDate = dayItem.date
+        val today = LocalDate.now()
+
+        if (localDate == today) {
+            holder.todayLabel.visibility = View.VISIBLE
+        } else {
+            holder.todayLabel.visibility = View.GONE
+        }
 
         holder.day.text = localDate.dayOfWeek.name.take(3)
         holder.date.text = localDate.dayOfMonth.toString()

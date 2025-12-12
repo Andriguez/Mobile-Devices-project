@@ -10,4 +10,5 @@
     <string name="previous">Previous</string>
     <string name="view_done">>Voir les tâches terminées (%1$d)</string>
     <string name="hide_done">Masquer les tâches terminées</string>
+    <string name="today">Ajd</string>
 </resources>
