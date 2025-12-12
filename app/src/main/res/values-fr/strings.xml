@@ -8,4 +8,6 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="view_done">>Voir les tâches terminées (%1$d)</string>
+    <string name="hide_done">Masquer les tâches terminées</string>
 </resources>

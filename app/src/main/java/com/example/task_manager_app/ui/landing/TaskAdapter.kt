@@ -8,6 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task_manager_app.R
 import com.example.task_manager_app.model.Task
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 
 class TaskAdapter(
     private var tasks: List<Task>,
@@ -25,6 +28,7 @@ class TaskAdapter(
         val description: TextView = itemView.findViewById(R.id.task_description)
         val checkBox: CheckBox = itemView.findViewById(R.id.task_checkbox)
         val time: TextView = itemView.findViewById(R.id.task_time)
+        val delayText: TextView = itemView.findViewById(R.id.delayText)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -51,6 +55,36 @@ class TaskAdapter(
 
         holder.itemView.setOnClickListener {
             onTaskClick(task)
+        }
+
+        val nowDate = LocalDate.now()
+        val nowTime = LocalTime.now()
+
+        val isOverdue =
+            task.date == nowDate &&
+                    task.time.isBefore(nowTime) &&
+                    !task.done
+
+        holder.itemView.setBackgroundResource(
+            if (isOverdue) R.drawable.task_bg_overdue
+            else R.drawable.task_bg_normal
+        )
+
+        if (isOverdue) {
+            val delayMinutes = ChronoUnit.MINUTES.between(task.time, nowTime)
+
+            val delayText = if (delayMinutes < 60) {
+                "Delayed by ${delayMinutes} min"
+            } else {
+                val h = delayMinutes / 60
+                val m = delayMinutes % 60
+                "Delayed by ${h}h ${m}m"
+            }
+
+            holder.delayText.text = delayText
+            holder.delayText.visibility = View.VISIBLE
+        } else {
+            holder.delayText.visibility = View.GONE
         }
 
 

@@ -39,6 +39,12 @@ class LandingActivity : AppCompatActivity() {
             viewModel.selectDate(selectedDate)
         }
 
+        dayAdapter.setSelectedDate(LocalDate.now())
+
+        daysRecycler.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        daysRecycler.adapter = dayAdapter
+
         daysRecycler.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         daysRecycler.adapter = dayAdapter

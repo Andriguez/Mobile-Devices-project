@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="soft_red">#B00020</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="soft_purple">#EEE6F7</color>
+    <color name="overdue_color">#FFF5EAEA</color>
 </resources>

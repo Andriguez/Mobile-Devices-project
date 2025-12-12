@@ -7,4 +7,6 @@
     <string name="previous">Previous</string>
     <string name="add_task_description">Add a new task</string>
     <string name="my_tasks">My Tasks</string>
+    <string name="view_done">View done tasks (%1$d)</string>
+    <string name="hide_done">Hide done tasks</string>
 </resources>

@@ -1,21 +1,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dayRoot"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:background="@drawable/day_item_bg"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:layout_margin="4dp"
+    android:background="@drawable/day_bg_normal">
 
     <TextView
         android:id="@+id/textDay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:textSize="14sp"
-        android:textStyle="bold" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/textDate"
+        android:textSize="12sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp" />
+        android:layout_height="wrap_content"/>
 </LinearLayout>

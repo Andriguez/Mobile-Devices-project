@@ -14,7 +14,15 @@ class DayAdapter(
     private val onDaySelected: (LocalDate) -> Unit
 ) : RecyclerView.Adapter<DayAdapter.DayViewHolder>() {
 
+    private var selectedDate: LocalDate? = null
+
+    fun setSelectedDate(date: LocalDate) {
+        selectedDate = date
+        notifyDataSetChanged()
+    }
+
     inner class DayViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val root: View = view.findViewById(R.id.dayRoot)
         val day: TextView = view.findViewById(R.id.textDay)
         val date: TextView = view.findViewById(R.id.textDate)
     }
@@ -32,7 +40,14 @@ class DayAdapter(
         holder.day.text = localDate.dayOfWeek.name.take(3)
         holder.date.text = localDate.dayOfMonth.toString()
 
+        val isSelected = localDate == selectedDate
+        holder.root.setBackgroundResource(
+            if (isSelected) R.drawable.day_bg_selected
+            else R.drawable.day_bg_normal
+        )
+
         holder.itemView.setOnClickListener {
+            setSelectedDate(localDate)
             onDaySelected(localDate)
         }
     }

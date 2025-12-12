@@ -9,24 +9,42 @@ import com.example.task_manager_app.model.Task
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class TaskViewModel : ViewModel() {
+class TaskViewModel(
+    private val repository: TaskRepository = TaskRepository()
+) : ViewModel() {
 
-    private val _allTasks = MutableLiveData<List<Task>>()
     private val _tasks = MutableLiveData<List<Task>>()
-    private val repository = TaskRepository()
-
     val tasks: LiveData<List<Task>> = _tasks
+    private val _activeTasks = MutableLiveData<List<Task>>()
+    val activeTasks: LiveData<List<Task>> = _activeTasks
+
+    private val _doneTasks = MutableLiveData<List<Task>>()
+    val doneTasks: LiveData<List<Task>> = _doneTasks
+    private var allTasks: List<Task> = emptyList()
+    private var selectedDate: LocalDate = LocalDate.now()
 
     fun loadTasks() {
         viewModelScope.launch {
-            _tasks.value = repository.loadTasks()
+            allTasks = repository.loadTasks()
+            applyFilter()
         }
     }
 
     fun selectDate(date: LocalDate) {
-        _tasks.value = _allTasks.value
-            ?.filter { it.date == date }
-            ?.sortedBy { it.time }
-            ?: emptyList()
+        selectedDate = date
+        applyFilter()
     }
+
+    private fun applyFilter() {
+        val tasksForDay = allTasks.filter { it.date == selectedDate }
+
+        _activeTasks.value = tasksForDay
+            .filter { !it.done }
+            .sortedBy { it.time }
+
+        _doneTasks.value = tasksForDay
+            .filter { it.done }
+            .sortedBy { it.time }
+    }
+
 }

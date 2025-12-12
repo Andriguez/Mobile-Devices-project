@@ -1,6 +1,26 @@
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/recyclerTasks"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:paddingTop="20dp" />
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerActiveTasks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textToggleDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/view_done"
+        android:textColor="@color/purple_500"
+        android:padding="12dp"
+        app:drawableStartCompat="@drawable/ic_arrow_right" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerDoneTasks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+</LinearLayout>
