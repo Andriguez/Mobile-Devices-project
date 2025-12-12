@@ -18,9 +18,15 @@ class LandingActivity : AppCompatActivity() {
                 Task(3, "Envoyer rapport", "PDF à joindre et envoyer au manager")
         )
 
-        val adapter = TaskAdapter(sampleTasks) { task ->
-            // action au clic (placeholder)
-        }
+        val adapter = TaskAdapter(
+            sampleTasks,
+            onTaskClick = { task ->
+                // item clicked
+            },
+            onTaskChecked = { task, isChecked ->
+                // checkbox toggled
+            }
+        )
 
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
