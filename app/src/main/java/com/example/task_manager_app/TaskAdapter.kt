@@ -8,15 +8,20 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class TaskAdapter(
-    private val tasks: List<Task>,
+    private var tasks: List<Task>,
     private val onTaskClick: (Task) -> Unit,
     private val onTaskChecked: (Task, Boolean) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
+    fun updateTasks(newTasks: List<Task>) {
+        tasks = newTasks
+        notifyDataSetChanged()
+    }
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.task_title)
         val description: TextView = itemView.findViewById(R.id.task_description)
         val checkBox: CheckBox = itemView.findViewById(R.id.task_checkbox)
+        val time: TextView = itemView.findViewById(R.id.task_time)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -33,6 +38,8 @@ class TaskAdapter(
 
         holder.checkBox.setOnCheckedChangeListener(null)
         holder.checkBox.isChecked = task.done
+        holder.time.text = task.time.toString()
+
 
         holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
             task.done = isChecked
@@ -42,6 +49,8 @@ class TaskAdapter(
         holder.itemView.setOnClickListener {
             onTaskClick(task)
         }
+
+
     }
 
     override fun getItemCount(): Int = tasks.size
