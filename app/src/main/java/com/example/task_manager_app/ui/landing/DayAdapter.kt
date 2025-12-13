@@ -13,6 +13,7 @@ import java.time.LocalDate
 import com.example.task_manager_app.utils.toShortMonth
 import java.util.Locale
 import com.example.task_manager_app.utils.generateDayItems
+import androidx.core.graphics.toColorInt
 
 class DayAdapter(
     private val days: List<DayItem>,
@@ -69,7 +70,7 @@ class DayAdapter(
         val isHoliday = holidays.contains(localDate)
         if (isHoliday) {
             // couleur bleue pour les jours fériés
-            val blue = Color.parseColor("#1976D2") // material blue 700
+            val blue = "#1976D2".toColorInt() // material blue 700
             holder.day.setTextColor(blue)
             holder.date.setTextColor(blue)
             holder.month.setTextColor(blue)
