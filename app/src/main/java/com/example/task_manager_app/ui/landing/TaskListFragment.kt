@@ -1,4 +1,3 @@
-package com.example.task_manager_app.ui.landing
 
 import android.os.Bundle
 import android.view.View
@@ -8,15 +7,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task_manager_app.R
+import com.example.task_manager_app.ui.landing.LandingActivity
+import com.example.task_manager_app.ui.landing.TaskAdapter
 import com.example.task_manager_app.viewmodel.TaskViewModel
-import java.time.LocalDate
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
-    private lateinit var adapter: TaskAdapter
-    private val viewModel: TaskViewModel by activityViewModels()
     private lateinit var activeAdapter: TaskAdapter
     private lateinit var doneAdapter: TaskAdapter
+    private val viewModel: TaskViewModel by activityViewModels()
     private var doneExpanded = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -26,8 +25,39 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         val doneRecycler = view.findViewById<RecyclerView>(R.id.recyclerDoneTasks)
         val toggleText = view.findViewById<TextView>(R.id.textToggleDone)
 
-        activeAdapter = TaskAdapter(emptyList(), { }, { _, _ -> })
-        doneAdapter = TaskAdapter(emptyList(), { }, { _, _ -> })
+        activeAdapter = TaskAdapter(
+            emptyList(),
+            onTaskClick = { /* optional item click */ },
+            onEdit = { task -> (activity as? LandingActivity)?.openEditTask(task) },
+            onTaskChecked = { task, checked ->
+                // le ViewModel n'expose pas `setTaskDone` dans la version fournie,
+                // on utilise `editTask` pour mettre à jour le flag done
+                viewModel.editTask(
+                    task.id,
+                    task.title,
+                    task.description,
+                    task.date.toString(),
+                    task.time.toString(),
+                    checked
+                )
+            }
+        )
+
+        doneAdapter = TaskAdapter(
+            emptyList(),
+            onTaskClick = { /* optional item click */ },
+            onEdit = { task -> (activity as? LandingActivity)?.openEditTask(task) },
+            onTaskChecked = { task, checked ->
+                viewModel.editTask(
+                    task.id,
+                    task.title,
+                    task.description,
+                    task.date.toString(),
+                    task.time.toString(),
+                    checked
+                )
+            }
+        )
 
         activeRecycler.layoutManager = LinearLayoutManager(requireContext())
         doneRecycler.layoutManager = LinearLayoutManager(requireContext())
@@ -41,41 +71,23 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
         viewModel.doneTasks.observe(viewLifecycleOwner) {
             doneAdapter.updateTasks(it)
-            toggleText.text = if (doneExpanded) {
-                getString(R.string.hide_done)
-            } else {
-                getString(R.string.view_done, it.size)
-            }
+            updateDoneToggleUi(toggleText)
         }
 
-        if (savedInstanceState == null) {
-            viewModel.loadTasks()
-            viewModel.selectDate(LocalDate.now())
-        }
-
+        // état initial du panneau "done"
+        doneRecycler.visibility = if (doneExpanded) View.VISIBLE else View.GONE
         updateDoneToggleUi(toggleText)
 
         toggleText.setOnClickListener {
             doneExpanded = !doneExpanded
-            doneRecycler.visibility =
-                if (doneExpanded) View.VISIBLE else View.GONE
-
+            doneRecycler.visibility = if (doneExpanded) View.VISIBLE else View.GONE
             updateDoneToggleUi(toggleText)
         }
-
     }
 
     private fun updateDoneToggleUi(toggleText: TextView) {
-        val arrow = if (doneExpanded) {
-            R.drawable.ic_arrow_down
-        } else {
-            R.drawable.ic_arrow_right
-        }
-
-        toggleText.setCompoundDrawablesWithIntrinsicBounds(
-            arrow, 0, 0, 0
-        )
-
+        val arrow = if (doneExpanded) R.drawable.ic_arrow_down else R.drawable.ic_arrow_right
+        toggleText.setCompoundDrawablesWithIntrinsicBounds(arrow, 0, 0, 0)
         toggleText.text = if (doneExpanded) {
             getString(R.string.hide_done)
         } else {

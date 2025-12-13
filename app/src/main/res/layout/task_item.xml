@@ -43,6 +43,15 @@
             android:visibility="gone"/>
     </LinearLayout>
 
+    <ImageButton
+        android:id="@+id/buttonMore"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_menu_more"
+        android:contentDescription="@string/edit"
+        android:layout_marginEnd="8dp" />
+
     <CheckBox
         android:id="@+id/task_checkbox"
         android:layout_width="wrap_content"

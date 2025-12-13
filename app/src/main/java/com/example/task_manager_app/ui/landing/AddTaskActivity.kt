@@ -1,3 +1,4 @@
+// kotlin
 package com.example.task_manager_app.ui.landing
 
 import android.app.Activity
@@ -18,6 +19,7 @@ class AddTaskActivity : AppCompatActivity() {
 
     private var selectedDate: LocalDate = LocalDate.now()
     private var selectedTime: LocalTime = LocalTime.now().withSecond(0).withNano(0)
+    private var editingId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,15 +33,22 @@ class AddTaskActivity : AppCompatActivity() {
         val buttonSave = findViewById<Button>(R.id.buttonSave)
         val buttonCancel = findViewById<Button>(R.id.buttonCancel)
 
-        fun updateDateButton() {
-            buttonDate.text = selectedDate.toString() // format ISO, simple and stable
+        // Si on reçoit une tâche à éditer, préremplir
+        editingId = intent.getIntExtra("id", -1).takeIf { it != -1 }
+        intent.getStringExtra("title")?.let { inputTitle.setText(it) }
+        intent.getStringExtra("description")?.let { inputDescription.setText(it) }
+        intent.getStringExtra("date")?.let {
+            try { selectedDate = LocalDate.parse(it) } catch (_: Exception) {}
         }
-        fun updateTimeButton() {
-            buttonTime.text = selectedTime.toString()
+        intent.getStringExtra("time")?.let {
+            try { selectedTime = LocalTime.parse(it) } catch (_: Exception) {}
         }
+        intent.getBooleanExtra("done", false).let { checkboxDone.isChecked = it }
 
-        updateDateButton()
-        updateTimeButton()
+        fun updateDateButton() { buttonDate.text = selectedDate.toString() }
+        fun updateTimeButton() { buttonTime.text = selectedTime.toString() }
+
+        updateDateButton(); updateTimeButton()
 
         buttonDate.setOnClickListener {
             val dp = DatePickerDialog(
@@ -84,6 +93,7 @@ class AddTaskActivity : AppCompatActivity() {
                 putExtra("date", selectedDate.toString())
                 putExtra("time", selectedTime.toString())
                 putExtra("done", done)
+                editingId?.let { putExtra("id", it) }
             }
             setResult(Activity.RESULT_OK, out)
             finish()

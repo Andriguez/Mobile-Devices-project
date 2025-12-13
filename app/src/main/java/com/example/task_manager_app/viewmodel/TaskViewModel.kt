@@ -62,6 +62,15 @@ class TaskViewModel(
         val newTask = Task(nextId, title, description, date, time, done)
         allTasks = allTasks + newTask
         applyFilter()
+
+    }
+
+    fun editTask(id: Int, title: String, description: String, dateStr: String, timeStr: String, done: Boolean) {
+        val date = LocalDate.parse(dateStr)
+        val time = LocalTime.parse(timeStr)
+        val updated = Task(id, title, description, date, time, done)
+        allTasks = allTasks.map { if (it.id == id) updated else it }
+        applyFilter()
     }
 
     //load for one year

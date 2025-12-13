@@ -1,9 +1,13 @@
+// kotlin
+// File: app/src/main/java/com/example/task_manager_app/ui/landing/TaskAdapter.kt
 package com.example.task_manager_app.ui.landing
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task_manager_app.R
@@ -15,6 +19,7 @@ import java.time.temporal.ChronoUnit
 class TaskAdapter(
     private var tasks: List<Task>,
     private val onTaskClick: (Task) -> Unit,
+    private val onEdit: (Task) -> Unit,
     private val onTaskChecked: (Task, Boolean) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
@@ -29,6 +34,7 @@ class TaskAdapter(
         val checkBox: CheckBox = itemView.findViewById(R.id.task_checkbox)
         val time: TextView = itemView.findViewById(R.id.task_time)
         val delayText: TextView = itemView.findViewById(R.id.delayText)
+        val more: ImageButton = itemView.findViewById(R.id.buttonMore)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -47,7 +53,6 @@ class TaskAdapter(
         holder.checkBox.isChecked = task.done
         holder.time.text = task.time.toString()
 
-
         holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
             task.done = isChecked
             onTaskChecked(task, isChecked)
@@ -55,6 +60,16 @@ class TaskAdapter(
 
         holder.itemView.setOnClickListener {
             onTaskClick(task)
+        }
+
+        holder.more.setOnClickListener { v ->
+            val popup = PopupMenu(v.context, v)
+            popup.menu.add(0, 0, 0, v.context.getString(R.string.edit))
+            popup.setOnMenuItemClickListener {
+                onEdit(task)
+                true
+            }
+            popup.show()
         }
 
         val nowDate = LocalDate.now()
@@ -86,8 +101,6 @@ class TaskAdapter(
         } else {
             holder.delayText.visibility = View.GONE
         }
-
-
     }
 
     override fun getItemCount(): Int = tasks.size
