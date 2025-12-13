@@ -10,6 +10,8 @@ import com.example.task_manager_app.R
 import com.example.task_manager_app.model.DayItem
 import com.example.task_manager_app.viewmodel.TaskViewModel
 import java.time.LocalDate
+import com.example.task_manager_app.utils.generateDayItems
+
 
 class LandingActivity : AppCompatActivity() {
 
@@ -23,6 +25,8 @@ class LandingActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.title = getString(R.string.my_tasks)
 
+
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, TaskListFragment())
@@ -31,9 +35,8 @@ class LandingActivity : AppCompatActivity() {
 
         val daysRecycler = findViewById<RecyclerView>(R.id.recyclerDays)
 
-        val days = (0..6).map {
-            DayItem(LocalDate.now().plusDays(it.toLong()))
-        }
+        val days = generateDayItems(LocalDate.now(), 180)
+        val adapter = DayAdapter(days, onDaySelected = { date -> viewModel.selectDate(date) })
 
         val dayAdapter = DayAdapter(days) { selectedDate ->
             viewModel.selectDate(selectedDate)
@@ -48,5 +51,16 @@ class LandingActivity : AppCompatActivity() {
         daysRecycler.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         daysRecycler.adapter = dayAdapter
+
+        viewModel.holidays.observe(this) { set ->
+            dayAdapter.setHolidays(set)
+        }
+        viewModel.loadHolidays(year = LocalDate.now().year, countryCode = "FR")
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, TaskListFragment())
+                .commit()
+        }
     }
 }
