@@ -55,7 +55,9 @@ class LandingActivity : AppCompatActivity() {
         viewModel.holidays.observe(this) { set ->
             dayAdapter.setHolidays(set)
         }
-        viewModel.loadHolidays(year = LocalDate.now().year, countryCode = "FR")
+        val years = days.map { it.date.year }.toSet()
+        viewModel.loadHolidaysForYears(years, countryCode = "FR")
+
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()

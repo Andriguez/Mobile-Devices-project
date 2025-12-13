@@ -54,6 +54,7 @@ class TaskViewModel(
             .sortedBy { it.time }
     }
 
+    //load for one year
     fun loadHolidays(year: Int = LocalDate.now().year, countryCode: String = "FR") {
         viewModelScope.launch {
             val set = holidayRepository.getPublicHolidays(year, countryCode)
@@ -61,4 +62,19 @@ class TaskViewModel(
         }
     }
 
+    //load for multiple years
+    fun loadHolidaysForYears(years: Set<Int>, countryCode: String = "FR") {
+        viewModelScope.launch {
+            val merged = mutableSetOf<LocalDate>()
+            for (y in years) {
+                try {
+                    val set = holidayRepository.getPublicHolidays(y, countryCode)
+                    merged.addAll(set)
+                } catch (_: Exception) {
+                    // protège contre une année qui échoue
+                }
+            }
+            _holidays.value = merged
+        }
+    }
 }
