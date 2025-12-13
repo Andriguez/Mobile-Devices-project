@@ -9,6 +9,7 @@ import com.example.task_manager_app.data.TaskRepository
 import com.example.task_manager_app.model.Task
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalTime
 
 class TaskViewModel(
     private val repository: TaskRepository = TaskRepository(),
@@ -52,6 +53,15 @@ class TaskViewModel(
         _doneTasks.value = tasksForDay
             .filter { it.done }
             .sortedBy { it.time }
+    }
+
+    fun addTask(title: String, description: String, dateStr: String, timeStr: String, done: Boolean) {
+        val date = LocalDate.parse(dateStr)
+        val time = LocalTime.parse(timeStr)
+        val nextId = (allTasks.maxOfOrNull { it.id } ?: 0) + 1
+        val newTask = Task(nextId, title, description, date, time, done)
+        allTasks = allTasks + newTask
+        applyFilter()
     }
 
     //load for one year

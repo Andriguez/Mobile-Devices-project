@@ -1,6 +1,11 @@
 package com.example.task_manager_app.ui.landing
 
+
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -11,11 +16,15 @@ import com.example.task_manager_app.model.DayItem
 import com.example.task_manager_app.viewmodel.TaskViewModel
 import java.time.LocalDate
 import com.example.task_manager_app.utils.generateDayItems
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.time.LocalTime
 
 
 class LandingActivity : AppCompatActivity() {
 
     private val viewModel: TaskViewModel by viewModels()
+    private lateinit var addTaskLauncher: ActivityResultLauncher<Intent>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,5 +73,25 @@ class LandingActivity : AppCompatActivity() {
                 .replace(R.id.fragment_container, TaskListFragment())
                 .commit()
         }
+
+        addTaskLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+                val title = data?.getStringExtra("title") ?: return@registerForActivityResult
+                val description = data.getStringExtra("description") ?: ""
+                val dateStr = data.getStringExtra("date") ?: LocalDate.now().toString()
+                val timeStr = data.getStringExtra("time") ?: LocalTime.now().toString()
+                val done = data.getBooleanExtra("done", false)
+                // Ajoute la tâche en mémoire via le ViewModel
+                viewModel.addTask(title, description, dateStr, timeStr, done)
+            }
+        }
+
+        val fab = findViewById<FloatingActionButton>(R.id.fabAddTask)
+        fab.setOnClickListener {
+            val intent = Intent(this, AddTaskActivity::class.java)
+            addTaskLauncher.launch(intent)
+        }
+
     }
 }
