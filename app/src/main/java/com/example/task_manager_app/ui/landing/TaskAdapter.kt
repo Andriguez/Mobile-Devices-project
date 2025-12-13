@@ -20,6 +20,8 @@ class TaskAdapter(
     private var tasks: List<Task>,
     private val onTaskClick: (Task) -> Unit,
     private val onEdit: (Task) -> Unit,
+    private val onDelete: (Task) -> Unit,
+
     private val onTaskChecked: (Task, Boolean) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
@@ -65,8 +67,12 @@ class TaskAdapter(
         holder.more.setOnClickListener { v ->
             val popup = PopupMenu(v.context, v)
             popup.menu.add(0, 0, 0, v.context.getString(R.string.edit))
-            popup.setOnMenuItemClickListener {
-                onEdit(task)
+            popup.menu.add(0, 1, 1, v.context.getString(R.string.delete))
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    0 -> onEdit(task)
+                    1 -> onDelete(task)
+                }
                 true
             }
             popup.show()

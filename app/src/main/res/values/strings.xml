@@ -19,4 +19,6 @@
     <string name="cancel">Cancel</string>
     <string name="enter_title">Enter Tile</string>
     <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
 </resources>

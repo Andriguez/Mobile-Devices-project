@@ -2,7 +2,6 @@
 // File: app/src/main/java/com/example/task_manager_app/ui/landing/LandingActivity.kt
 package com.example.task_manager_app.ui.landing
 
-import TaskListFragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle

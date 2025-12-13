@@ -73,6 +73,11 @@ class TaskViewModel(
         applyFilter()
     }
 
+    fun deleteTask(id: Int) {
+        allTasks = allTasks.filter { it.id != id }
+        applyFilter()
+    }
+
     //load for one year
     fun loadHolidays(year: Int = LocalDate.now().year, countryCode: String = "FR") {
         viewModelScope.launch {

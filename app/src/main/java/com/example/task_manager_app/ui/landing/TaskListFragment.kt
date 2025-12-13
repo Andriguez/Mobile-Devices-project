@@ -1,3 +1,4 @@
+package com.example.task_manager_app.ui.landing
 
 import android.os.Bundle
 import android.view.View
@@ -30,8 +31,6 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             onTaskClick = { /* optional item click */ },
             onEdit = { task -> (activity as? LandingActivity)?.openEditTask(task) },
             onTaskChecked = { task, checked ->
-                // le ViewModel n'expose pas `setTaskDone` dans la version fournie,
-                // on utilise `editTask` pour mettre à jour le flag done
                 viewModel.editTask(
                     task.id,
                     task.title,
@@ -40,6 +39,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                     task.time.toString(),
                     checked
                 )
+            },
+            onDelete = { task ->
+                viewModel.deleteTask(task.id)
             }
         )
 
@@ -56,6 +58,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                     task.time.toString(),
                     checked
                 )
+            },
+            onDelete = { task ->
+                viewModel.deleteTask(task.id)
             }
         )
 
@@ -74,7 +79,6 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             updateDoneToggleUi(toggleText)
         }
 
-        // état initial du panneau "done"
         doneRecycler.visibility = if (doneExpanded) View.VISIBLE else View.GONE
         updateDoneToggleUi(toggleText)
 
