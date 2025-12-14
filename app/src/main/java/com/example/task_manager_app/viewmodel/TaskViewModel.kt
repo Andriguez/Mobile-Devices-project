@@ -35,6 +35,9 @@ class TaskViewModel(
 
     private var allTasks: List<Task> = emptyList()
     private var selectedDate: LocalDate = LocalDate.now()
+    private val _selectedHolidayName = MutableLiveData<String?>()
+    val selectedHolidayName: LiveData<String?> = _selectedHolidayName
+
 
     fun loadTasks() {
         viewModelScope.launch {
@@ -46,6 +49,9 @@ class TaskViewModel(
     fun selectDate(date: LocalDate) {
         selectedDate = date
         applyFilter()
+
+        val name = holidayNames.value?.get(date)
+        _selectedHolidayName.value = name
     }
 
     private fun applyFilter() {

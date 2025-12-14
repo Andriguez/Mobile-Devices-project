@@ -5,6 +5,8 @@ package com.example.task_manager_app.ui.landing
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -85,6 +87,18 @@ class LandingActivity : AppCompatActivity() {
         fab.setOnClickListener {
             val intent = Intent(this, AddTaskActivity::class.java)
             addTaskLauncher.launch(intent)
+        }
+
+        val holidayContainer = findViewById<View>(R.id.holidayContainer)
+        val holidayText = findViewById<TextView>(R.id.holidayText)
+
+        viewModel.selectedHolidayName.observe(this) { name ->
+            if (!name.isNullOrBlank()) {
+                holidayText.text = name
+                holidayContainer.visibility = View.VISIBLE
+            } else {
+                holidayContainer.visibility = View.GONE
+            }
         }
     }
 

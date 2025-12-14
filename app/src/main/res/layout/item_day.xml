@@ -1,9 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dayRoot"
-    android:layout_width="wrap_content"
-    android:minWidth="70dp"
-    android:layout_height="wrap_content"
-    android:minHeight="80dp"
+    android:layout_width="70dp"
+    android:layout_height="80dp"
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:padding="12dp"
@@ -43,12 +41,4 @@
         android:textSize="12sp"
         android:textColor="@color/black" />
 
-    <TextView
-        android:id="@+id/textHoliday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="11sp"
-        android:textColor="@color/primaryVariant"
-        android:visibility="gone"
-        android:layout_marginTop="2dp"/>
 </LinearLayout>

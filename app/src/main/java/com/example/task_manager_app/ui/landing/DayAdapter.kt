@@ -49,9 +49,6 @@ class DayAdapter(
         val todayLabel: TextView = view.findViewById(R.id.textTodayLabel)
 
         val month: TextView = view.findViewById(R.id.textMonth)
-
-        val holiday: TextView = view.findViewById(R.id.textHoliday)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
@@ -69,11 +66,11 @@ class DayAdapter(
             holder.todayLabel.visibility = View.VISIBLE
         } else {
             holder.todayLabel.visibility = View.GONE
+            holder.month.text = localDate.toShortMonth(Locale.ENGLISH)
         }
 
         holder.day.text = localDate.dayOfWeek.name.take(3)
         holder.date.text = localDate.dayOfMonth.toString()
-        holder.month.text = localDate.toShortMonth(Locale.ENGLISH)
 
         val isHoliday = holidays.contains(localDate)
         if (isHoliday) {
@@ -89,19 +86,6 @@ class DayAdapter(
             holder.month.setTextColor(normal)
 
         }
-
-        val name = holidayNames[localDate]
-        if (!name.isNullOrBlank()) {
-            holder.holiday.text = name
-            holder.holiday.visibility = View.VISIBLE
-        } else if (holidays.contains(localDate)) {
-            // date marquée comme jour férié mais aucun nom fourni par l'API:
-            holder.holiday.text = holder.itemView.context.getString(R.string.holiday_label)
-            holder.holiday.visibility = View.VISIBLE
-        } else {
-            holder.holiday.visibility = View.GONE
-        }
-
 
         val isSelected = localDate == selectedDate
         holder.root.setBackgroundResource(

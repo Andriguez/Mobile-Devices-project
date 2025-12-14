@@ -19,7 +19,9 @@ class TaskRepository {
                 Task(3, "Envoyer rapport", "PDF à joindre et envoyer au manager", LocalDate.now().plusDays(1), LocalTime.of(11, 0)),
                 Task(4, "Other task", "do something else", LocalDate.now().plusDays(2), LocalTime.of(14, 0)),
                 Task(5, "Done task 1", "Supermarché, rayon lait", LocalDate.now(), LocalTime.of(12, 30), true),
-                Task(6, "Done task 2", "Supermarché, rayon lait", LocalDate.now(), LocalTime.of(10, 45), true)
+                Task(6, "Done task 2", "Supermarché, rayon lait", LocalDate.now(), LocalTime.of(10, 45), true),
+                Task(7, "Acheter du lait", "Supermarché, rayon lait", LocalDate.of(2025, 12, 25), LocalTime.of(9, 30)),
+
             )
         }
 }
