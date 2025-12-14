@@ -56,6 +56,11 @@ class LandingActivity : AppCompatActivity() {
         viewModel.holidays.observe(this) { set ->
             dayAdapter.setHolidays(set)
         }
+
+        viewModel.holidayNames.observe(this) { map ->
+            dayAdapter.setHolidayNames(map)
+        }
+
         val years = days.map { it.date.year }.toSet()
         viewModel.loadHolidaysForYears(years, countryCode = "FR")
 

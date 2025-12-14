@@ -1,3 +1,4 @@
+
 package com.example.task_manager_app.viewmodel
 
 import androidx.lifecycle.LiveData
@@ -14,7 +15,6 @@ import java.time.LocalTime
 class TaskViewModel(
     private val repository: TaskRepository = TaskRepository(),
     private val holidayRepository: HolidayRepository = HolidayRepository()
-
 ) : ViewModel() {
 
     private val _tasks = MutableLiveData<List<Task>>()
@@ -25,8 +25,13 @@ class TaskViewModel(
     private val _doneTasks = MutableLiveData<List<Task>>()
     val doneTasks: LiveData<List<Task>> = _doneTasks
 
+    // LiveData des dates de jours fériés (Set)
     private val _holidays = MutableLiveData<Set<LocalDate>>(emptySet())
     val holidays: LiveData<Set<LocalDate>> = _holidays
+
+    // map date -> name (vide pour l'instant, compatible avec UI qui attend holidayNames)
+    private val _holidayNames = MutableLiveData<Map<LocalDate, String>>(emptyMap())
+    val holidayNames: LiveData<Map<LocalDate, String>> = _holidayNames
 
     private var allTasks: List<Task> = emptyList()
     private var selectedDate: LocalDate = LocalDate.now()
@@ -62,7 +67,6 @@ class TaskViewModel(
         val newTask = Task(nextId, title, description, date, time, done)
         allTasks = allTasks + newTask
         applyFilter()
-
     }
 
     fun editTask(id: Int, title: String, description: String, dateStr: String, timeStr: String, done: Boolean) {
@@ -78,27 +82,35 @@ class TaskViewModel(
         applyFilter()
     }
 
-    //load for one year
+    // charge les jours fériés pour une année (HolidayRepository renvoie Set<LocalDate>)
     fun loadHolidays(year: Int = LocalDate.now().year, countryCode: String = "FR") {
         viewModelScope.launch {
-            val set = holidayRepository.getPublicHolidays(year, countryCode)
-            _holidays.value = set
+            try {
+                val map = holidayRepository.getPublicHolidaysWithNames(year, countryCode)
+                _holidays.value = map.keys.toSet()
+                _holidayNames.value = map
+            } catch (_: Exception) {
+                // ignore
+            }
         }
     }
 
-    //load for multiple years
+    // charge pour plusieurs années et fusionne les ensembles
     fun loadHolidaysForYears(years: Set<Int>, countryCode: String = "FR") {
         viewModelScope.launch {
-            val merged = mutableSetOf<LocalDate>()
+            val mergedSet = mutableSetOf<LocalDate>()
+            val mergedNames = mutableMapOf<LocalDate, String>()
             for (y in years) {
                 try {
-                    val set = holidayRepository.getPublicHolidays(y, countryCode)
-                    merged.addAll(set)
+                    val map = holidayRepository.getPublicHolidaysWithNames(y, countryCode)
+                    mergedSet.addAll(map.keys)
+                    mergedNames.putAll(map)
                 } catch (_: Exception) {
                     // protège contre une année qui échoue
                 }
             }
-            _holidays.value = merged
+            _holidays.value = mergedSet
+            _holidayNames.value = mergedNames
         }
     }
 }
