@@ -14,6 +14,7 @@ import com.example.task_manager_app.utils.toShortMonth
 import java.util.Locale
 import com.example.task_manager_app.utils.generateDayItems
 import androidx.core.graphics.toColorInt
+import kotlin.text.get
 
 class DayAdapter(
     private val days: List<DayItem>,
@@ -23,6 +24,7 @@ class DayAdapter(
 
     private var selectedDate: LocalDate? = null
     private var holidays: Set<LocalDate> = emptySet()
+    private var holidayNames: Map<LocalDate, String> = emptyMap()
 
 
     fun setSelectedDate(date: LocalDate) {
@@ -35,6 +37,11 @@ class DayAdapter(
         notifyDataSetChanged()
     }
 
+    fun setHolidayNames(map: Map<LocalDate, String>) {
+        holidayNames = map
+        notifyDataSetChanged()
+    }
+
     inner class DayViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val root: View = view.findViewById(R.id.dayRoot)
         val day: TextView = view.findViewById(R.id.textDay)
@@ -43,6 +50,7 @@ class DayAdapter(
 
         val month: TextView = view.findViewById(R.id.textMonth)
 
+        val holiday: TextView = view.findViewById(R.id.textHoliday)
 
     }
 
@@ -81,6 +89,19 @@ class DayAdapter(
             holder.month.setTextColor(normal)
 
         }
+
+        val name = holidayNames[localDate]
+        if (!name.isNullOrBlank()) {
+            holder.holiday.text = name
+            holder.holiday.visibility = View.VISIBLE
+        } else if (holidays.contains(localDate)) {
+            // date marquée comme jour férié mais aucun nom fourni par l'API:
+            holder.holiday.text = holder.itemView.context.getString(R.string.holiday_label)
+            holder.holiday.visibility = View.VISIBLE
+        } else {
+            holder.holiday.visibility = View.GONE
+        }
+
 
         val isSelected = localDate == selectedDate
         holder.root.setBackgroundResource(

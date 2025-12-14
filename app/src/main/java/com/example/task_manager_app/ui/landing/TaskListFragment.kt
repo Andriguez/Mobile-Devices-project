@@ -79,6 +79,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             updateDoneToggleUi(toggleText)
         }
 
+
+
         doneRecycler.visibility = if (doneExpanded) View.VISIBLE else View.GONE
         updateDoneToggleUi(toggleText)
 

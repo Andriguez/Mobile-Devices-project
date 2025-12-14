@@ -20,5 +20,7 @@
     <string name="enter_title">Enter Tile</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="holiday_label">Holiday</string>
+
 
 </resources>
