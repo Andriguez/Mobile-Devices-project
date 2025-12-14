@@ -5,6 +5,8 @@ package com.example.task_manager_app.ui.landing
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
@@ -21,7 +23,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import com.example.task_manager_app.utils.generateDayItems
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-
+import com.example.task_manager_app.ui.readme.ReadmeActivity
 class LandingActivity : AppCompatActivity() {
 
     private val viewModel: TaskViewModel by viewModels()
@@ -113,6 +115,31 @@ class LandingActivity : AppCompatActivity() {
             putExtra("done", task.done)
         }
         addTaskLauncher.launch(intent)
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Assuming R.menu.menu_main is your main menu file
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    /**
+     * Handles item clicks on the ActionBar menu.
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                // R.id.action_settings is already defined in your strings.xml
+                // Handle settings intent here if needed
+                true
+            }
+            R.id.action_readme -> {
+                // Launch the ReadmeActivity
+                val intent = Intent(this, ReadmeActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 

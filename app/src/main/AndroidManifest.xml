@@ -13,6 +13,7 @@
         android:theme="@style/Theme.TaskManagerApp">
         <activity android:name=".ui.landing.LandingActivity" />
         <activity android:name=".ui.landing.AddTaskActivity" />
+        <activity android:name=".ui.readme.ReadmeActivity" />
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
