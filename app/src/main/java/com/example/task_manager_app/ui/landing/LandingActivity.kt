@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.task_manager_app.R
-import com.example.task_manager_app.ui.taskcreation.AddTaskActivity
 import com.example.task_manager_app.ui.main.MainActivity
 import com.example.task_manager_app.ui.readme.ReadmeActivity
+import com.example.task_manager_app.ui.taskcreation.AddTaskActivity
 
 
 class LandingActivity : AppCompatActivity() {

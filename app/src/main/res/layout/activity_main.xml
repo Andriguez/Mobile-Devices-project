@@ -26,27 +26,27 @@
             android:id="@+id/recyclerDays"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="12dp"
-            android:clipToPadding="false"/>
+            android:clipToPadding="false"
+            android:paddingHorizontal="12dp" />
 
         <LinearLayout
             android:id="@+id/holidayContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp"
             android:layout_marginHorizontal="12dp"
             android:layout_marginBottom="4dp"
             android:background="#E3F2FD"
+            android:orientation="horizontal"
+            android:padding="8dp"
             android:visibility="gone">
 
             <TextView
                 android:id="@+id/holidayText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#1976D2"
                 android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="#1976D2"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <FrameLayout

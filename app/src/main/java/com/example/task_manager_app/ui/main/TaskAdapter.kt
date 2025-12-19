@@ -15,10 +15,6 @@ import com.example.task_manager_app.model.Task
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.provider.CalendarContract
-import androidx.core.content.ContextCompat.startActivity
 
 class TaskAdapter(
     private var tasks: List<Task>,

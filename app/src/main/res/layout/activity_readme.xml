@@ -13,8 +13,8 @@
             android:id="@+id/textReadmeContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:lineSpacingExtra="4dp"/>
+            android:lineSpacingExtra="4dp"
+            android:textSize="16sp" />
     </ScrollView>
 
 </LinearLayout>

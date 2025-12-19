@@ -36,15 +36,26 @@ class AddTaskActivity : AppCompatActivity() {
         intent.getStringExtra("title")?.let { inputTitle.setText(it) }
         intent.getStringExtra("description")?.let { inputDescription.setText(it) }
         intent.getStringExtra("date")?.let {
-            try { selectedDate = LocalDate.parse(it) } catch (_: Exception) {}
+            try {
+                selectedDate = LocalDate.parse(it)
+            } catch (_: Exception) {
+            }
         }
         intent.getStringExtra("time")?.let {
-            try { selectedTime = LocalTime.parse(it) } catch (_: Exception) {}
+            try {
+                selectedTime = LocalTime.parse(it)
+            } catch (_: Exception) {
+            }
         }
         intent.getBooleanExtra("done", false).let { checkboxDone.isChecked = it }
 
-        fun updateDateButton() { buttonDate.text = selectedDate.toString() }
-        fun updateTimeButton() { buttonTime.text = selectedTime.toString() }
+        fun updateDateButton() {
+            buttonDate.text = selectedDate.toString()
+        }
+
+        fun updateTimeButton() {
+            buttonTime.text = selectedTime.toString()
+        }
 
         updateDateButton(); updateTimeButton()
 

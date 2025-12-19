@@ -2,42 +2,42 @@
     android:id="@+id/dayRoot"
     android:layout_width="70dp"
     android:layout_height="80dp"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:padding="12dp"
     android:layout_margin="4dp"
-    android:background="@drawable/day_bg_normal">
+    android:background="@drawable/day_bg_normal"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="12dp">
 
     <TextView
         android:id="@+id/textDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
+        android:textAlignment="center"
         android:textSize="16sp"
-        android:textAlignment="center"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/textTodayLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/today"
+        android:textColor="#6200EE"
         android:textSize="11sp"
         android:textStyle="bold"
-        android:textColor="#6200EE"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textMonth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textSize="12sp" />
 
 </LinearLayout>
