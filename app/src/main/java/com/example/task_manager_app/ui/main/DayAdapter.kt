@@ -5,13 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task_manager_app.R
 import com.example.task_manager_app.model.DayItem
-import java.time.LocalDate
 import com.example.task_manager_app.utils.toShortMonth
+import java.time.LocalDate
 import java.util.Locale
-import androidx.core.graphics.toColorInt
 
 class DayAdapter(
     private val days: List<DayItem>,

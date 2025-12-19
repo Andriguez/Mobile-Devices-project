@@ -41,7 +41,8 @@ class HolidayRepository {
             } finally {
                 try {
                     conn?.disconnect()
-                } catch (_: Exception) { /* ignore */ }
+                } catch (_: Exception) { /* ignore */
+                }
             }
         }
 
@@ -82,7 +83,8 @@ class HolidayRepository {
             } finally {
                 try {
                     conn?.disconnect()
-                } catch (_: Exception) { /* ignore */ }
+                } catch (_: Exception) { /* ignore */
+                }
             }
         }
 }

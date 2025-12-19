@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task_manager_app.R
@@ -72,22 +71,23 @@ class MainActivity : AppCompatActivity() {
         val years = days.map { it.date.year }.toSet()
         viewModel.loadHolidaysForYears(years, countryCode = "FR")
 
-        addTaskLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val data = result.data ?: return@registerForActivityResult
-                val title = data.getStringExtra("title") ?: return@registerForActivityResult
-                val description = data.getStringExtra("description") ?: ""
-                val dateStr = data.getStringExtra("date") ?: LocalDate.now().toString()
-                val timeStr = data.getStringExtra("time") ?: LocalTime.now().toString()
-                val done = data.getBooleanExtra("done", false)
-                val id = data.getIntExtra("id", -1)
-                if (id != -1) {
-                    viewModel.editTask(id, title, description, dateStr, timeStr, done)
-                } else {
-                    viewModel.addTask(title, description, dateStr, timeStr, done)
+        addTaskLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val data = result.data ?: return@registerForActivityResult
+                    val title = data.getStringExtra("title") ?: return@registerForActivityResult
+                    val description = data.getStringExtra("description") ?: ""
+                    val dateStr = data.getStringExtra("date") ?: LocalDate.now().toString()
+                    val timeStr = data.getStringExtra("time") ?: LocalTime.now().toString()
+                    val done = data.getBooleanExtra("done", false)
+                    val id = data.getIntExtra("id", -1)
+                    if (id != -1) {
+                        viewModel.editTask(id, title, description, dateStr, timeStr, done)
+                    } else {
+                        viewModel.addTask(title, description, dateStr, timeStr, done)
+                    }
                 }
             }
-        }
 
         val fab = findViewById<FloatingActionButton>(R.id.fabAddTask)
         fab.setOnClickListener {
@@ -125,6 +125,7 @@ class MainActivity : AppCompatActivity() {
         }
         addTaskLauncher.launch(intent)
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         // Assuming R.menu.menu_main is your main menu file
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -141,18 +142,21 @@ class MainActivity : AppCompatActivity() {
                 // Handle settings intent here if needed
                 true
             }
+
             R.id.action_readme -> {
                 // Launch the ReadmeActivity
                 val intent = Intent(this, ReadmeActivity::class.java)
                 startActivity(intent)
                 true
             }
+
             R.id.action_home -> {
                 //Launch LandingPage
                 val intent = Intent(this, LandingActivity::class.java)
                 startActivity(intent)
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -177,7 +181,8 @@ class MainActivity : AppCompatActivity() {
 
     fun toMillis(date: LocalDate, time: LocalTime): Long {
 
-        val dateTime = LocalDateTime.of(date.year, date.month, date.dayOfMonth, time.hour, time.minute)
+        val dateTime =
+            LocalDateTime.of(date.year, date.month, date.dayOfMonth, time.hour, time.minute)
 
         return dateTime
             .atZone(ZoneId.systemDefault())

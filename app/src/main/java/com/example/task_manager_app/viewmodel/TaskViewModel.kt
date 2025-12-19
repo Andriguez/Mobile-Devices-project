@@ -1,9 +1,5 @@
-
 package com.example.task_manager_app.viewmodel
 
-import android.content.Intent
-import android.provider.CalendarContract
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,9 +9,7 @@ import com.example.task_manager_app.data.TaskRepository
 import com.example.task_manager_app.model.Task
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.ZoneId
 
 class TaskViewModel(
     private val repository: TaskRepository = TaskRepository(),
@@ -73,7 +67,13 @@ class TaskViewModel(
             .sortedBy { it.time }
     }
 
-    fun addTask(title: String, description: String, dateStr: String, timeStr: String, done: Boolean) {
+    fun addTask(
+        title: String,
+        description: String,
+        dateStr: String,
+        timeStr: String,
+        done: Boolean
+    ) {
         val date = LocalDate.parse(dateStr)
         val time = LocalTime.parse(timeStr)
         val nextId = (allTasks.maxOfOrNull { it.id } ?: 0) + 1
@@ -82,7 +82,14 @@ class TaskViewModel(
         applyFilter()
     }
 
-    fun editTask(id: Int, title: String, description: String, dateStr: String, timeStr: String, done: Boolean) {
+    fun editTask(
+        id: Int,
+        title: String,
+        description: String,
+        dateStr: String,
+        timeStr: String,
+        done: Boolean
+    ) {
         val date = LocalDate.parse(dateStr)
         val time = LocalTime.parse(timeStr)
         val updated = Task(id, title, description, date, time, done)
