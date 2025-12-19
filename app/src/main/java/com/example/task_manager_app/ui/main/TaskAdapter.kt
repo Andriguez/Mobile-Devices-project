@@ -1,6 +1,6 @@
 // kotlin
 // File: app/src/main/java/com/example/task_manager_app/ui/landing/TaskAdapter.kt
-package com.example.task_manager_app.ui.landing
+package com.example.task_manager_app.ui.main
 
 import android.view.LayoutInflater
 import android.view.View

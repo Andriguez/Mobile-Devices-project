@@ -11,4 +11,9 @@
     <string name="view_done">>Voir les tâches terminées (%1$d)</string>
     <string name="hide_done">Masquer les tâches terminées</string>
     <string name="today">Ajd</string>
+    <string name="welcome_text">Bienvenue sur Task\'it</string>
+    <string name="view_tasks_btn">Voir mes tâches</string>
+    <string name="add_tasks_btn">Ajouter une nouvelle tâche</string>
+    <string name="readme_btn">Consultez la page Lisez-moi</string>
+    <string name="action_home">Page d\'accueil</string>
 </resources>

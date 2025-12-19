@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.task_manager_app">
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -11,11 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskManagerApp">
-        <activity android:name=".ui.landing.LandingActivity" />
-        <activity android:name=".ui.landing.AddTaskActivity" />
-        <activity android:name=".ui.readme.ReadmeActivity" />
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.landing.LandingActivity"
             android:exported="true"
             android:theme="@style/Theme.TaskManagerApp">
             <intent-filter>
@@ -24,6 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.main.MainActivity" />
+        <activity android:name=".ui.taskcreation.AddTaskActivity" />
+        <activity android:name=".ui.readme.ReadmeActivity" />
     </application>
 
 </manifest>

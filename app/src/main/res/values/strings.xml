@@ -52,5 +52,9 @@
         \u2022 Developer: Monisha CLEMENCEAU\n\n
 
     </string>
-
+    <string name="welcome_text">Welcome to Task\'it</string>
+    <string name="view_tasks_btn">View My Tasks</string>
+    <string name="add_tasks_btn">Add New Task</string>
+    <string name="readme_btn">View Readme Page</string>
+    <string name="action_home">Homepage</string>
 </resources>

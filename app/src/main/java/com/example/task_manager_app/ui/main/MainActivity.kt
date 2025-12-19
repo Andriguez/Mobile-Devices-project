@@ -2,15 +2,151 @@ package com.example.task_manager_app.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.task_manager_app.R
+import com.example.task_manager_app.model.Task
 import com.example.task_manager_app.ui.landing.LandingActivity
+import com.example.task_manager_app.ui.readme.ReadmeActivity
+import com.example.task_manager_app.ui.taskcreation.AddTaskActivity
+import com.example.task_manager_app.utils.generateDayItems
+import com.example.task_manager_app.viewmodel.TaskViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.time.LocalDate
+import java.time.LocalTime
 
 class MainActivity : AppCompatActivity() {
 
+    private val viewModel: TaskViewModel by viewModels()
+    private lateinit var addTaskLauncher: ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        startActivity(Intent(this, LandingActivity::class.java))
-        finish()
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = getString(R.string.my_tasks)
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, TaskListFragment())
+                .commit()
+        }
+
+        val daysRecycler = findViewById<RecyclerView>(R.id.recyclerDays)
+        val days = generateDayItems(LocalDate.now(), 180)
+        val dayAdapter = DayAdapter(days) { selectedDate ->
+            viewModel.selectDate(selectedDate)
+        }
+
+        dayAdapter.setSelectedDate(LocalDate.now())
+
+        viewModel.loadTasks()
+
+        daysRecycler.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        daysRecycler.adapter = dayAdapter
+
+        viewModel.holidays.observe(this) { set ->
+            dayAdapter.setHolidays(set)
+        }
+
+        viewModel.holidayNames.observe(this) { map ->
+            dayAdapter.setHolidayNames(map)
+        }
+
+        val years = days.map { it.date.year }.toSet()
+        viewModel.loadHolidaysForYears(years, countryCode = "FR")
+
+        addTaskLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data = result.data ?: return@registerForActivityResult
+                val title = data.getStringExtra("title") ?: return@registerForActivityResult
+                val description = data.getStringExtra("description") ?: ""
+                val dateStr = data.getStringExtra("date") ?: LocalDate.now().toString()
+                val timeStr = data.getStringExtra("time") ?: LocalTime.now().toString()
+                val done = data.getBooleanExtra("done", false)
+                val id = data.getIntExtra("id", -1)
+                if (id != -1) {
+                    viewModel.editTask(id, title, description, dateStr, timeStr, done)
+                } else {
+                    viewModel.addTask(title, description, dateStr, timeStr, done)
+                }
+            }
+        }
+
+        val fab = findViewById<FloatingActionButton>(R.id.fabAddTask)
+        fab.setOnClickListener {
+            val intent = Intent(this, AddTaskActivity::class.java)
+            addTaskLauncher.launch(intent)
+        }
+
+        val holidayContainer = findViewById<View>(R.id.holidayContainer)
+        val holidayText = findViewById<TextView>(R.id.holidayText)
+
+        viewModel.selectedHolidayName.observe(this) { name ->
+            if (!name.isNullOrBlank()) {
+                holidayText.text = name
+                holidayContainer.visibility = View.VISIBLE
+            } else {
+                holidayContainer.visibility = View.GONE
+            }
+        }
     }
+
+    // méthode publique pour ouvrir l'éditeur pour une tâche existante
+    fun openEditTask(task: Task) {
+        val intent = Intent(this, AddTaskActivity::class.java).apply {
+            putExtra("id", task.id)
+            putExtra("title", task.title)
+            putExtra("description", task.description)
+            putExtra("date", task.date.toString())
+            putExtra("time", task.time.toString())
+            putExtra("done", task.done)
+        }
+        addTaskLauncher.launch(intent)
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Assuming R.menu.menu_main is your main menu file
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    /**
+     * Handles item clicks on the ActionBar menu.
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                // R.id.action_settings is already defined in your strings.xml
+                // Handle settings intent here if needed
+                true
+            }
+            R.id.action_readme -> {
+                // Launch the ReadmeActivity
+                val intent = Intent(this, ReadmeActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.action_home -> {
+                //Launch LandingPage
+                val intent = Intent(this, LandingActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
 }

@@ -1,7 +1,5 @@
-// kotlin
-package com.example.task_manager_app.ui.landing
+package com.example.task_manager_app.ui.taskcreation
 
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -95,12 +93,12 @@ class AddTaskActivity : AppCompatActivity() {
                 putExtra("done", done)
                 editingId?.let { putExtra("id", it) }
             }
-            setResult(Activity.RESULT_OK, out)
+            setResult(RESULT_OK, out)
             finish()
         }
 
         buttonCancel.setOnClickListener {
-            setResult(Activity.RESULT_CANCELED)
+            setResult(RESULT_CANCELED)
             finish()
         }
     }

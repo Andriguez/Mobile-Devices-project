@@ -1,6 +1,5 @@
-package com.example.task_manager_app.ui.landing
+package com.example.task_manager_app.ui.main
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,7 @@ import com.example.task_manager_app.model.DayItem
 import java.time.LocalDate
 import com.example.task_manager_app.utils.toShortMonth
 import java.util.Locale
-import com.example.task_manager_app.utils.generateDayItems
 import androidx.core.graphics.toColorInt
-import kotlin.text.get
 
 class DayAdapter(
     private val days: List<DayItem>,

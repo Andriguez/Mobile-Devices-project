@@ -1,4 +1,4 @@
-package com.example.task_manager_app.ui.landing
+package com.example.task_manager_app.ui.main
 
 import android.os.Bundle
 import android.view.View
@@ -8,8 +8,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task_manager_app.R
-import com.example.task_manager_app.ui.landing.LandingActivity
-import com.example.task_manager_app.ui.landing.TaskAdapter
 import com.example.task_manager_app.viewmodel.TaskViewModel
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
@@ -29,7 +27,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         activeAdapter = TaskAdapter(
             emptyList(),
             onTaskClick = { /* optional item click */ },
-            onEdit = { task -> (activity as? LandingActivity)?.openEditTask(task) },
+            onEdit = { task -> (activity as? MainActivity)?.openEditTask(task) },
             onTaskChecked = { task, checked ->
                 viewModel.editTask(
                     task.id,
@@ -48,7 +46,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         doneAdapter = TaskAdapter(
             emptyList(),
             onTaskClick = { /* optional item click */ },
-            onEdit = { task -> (activity as? LandingActivity)?.openEditTask(task) },
+            onEdit = { task -> (activity as? MainActivity)?.openEditTask(task) },
             onTaskChecked = { task, checked ->
                 viewModel.editTask(
                     task.id,
