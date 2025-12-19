@@ -1,6 +1,9 @@
 
 package com.example.task_manager_app.viewmodel
 
+import android.content.Intent
+import android.provider.CalendarContract
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,11 +13,15 @@ import com.example.task_manager_app.data.TaskRepository
 import com.example.task_manager_app.model.Task
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
 
 class TaskViewModel(
     private val repository: TaskRepository = TaskRepository(),
-    private val holidayRepository: HolidayRepository = HolidayRepository()
+    private val holidayRepository: HolidayRepository = HolidayRepository(),
+    private val _openCalendarEvent: MutableLiveData<Task> = MutableLiveData<Task>(),
+    val openCalendarEvent: LiveData<Task> = _openCalendarEvent
 ) : ViewModel() {
 
     private val _tasks = MutableLiveData<List<Task>>()
@@ -118,5 +125,9 @@ class TaskViewModel(
             _holidays.value = mergedSet
             _holidayNames.value = mergedNames
         }
+    }
+
+    fun requestOpenCalendar(task: Task) {
+        _openCalendarEvent.value = task
     }
 }

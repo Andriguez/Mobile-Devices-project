@@ -40,6 +40,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             },
             onDelete = { task ->
                 viewModel.deleteTask(task.id)
+            },
+            onAddCalendar = {
+                    task -> viewModel.requestOpenCalendar(task)
             }
         )
 
@@ -59,6 +62,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             },
             onDelete = { task ->
                 viewModel.deleteTask(task.id)
+            },
+            onAddCalendar = {
+                task -> viewModel.requestOpenCalendar(task)
             }
         )
 

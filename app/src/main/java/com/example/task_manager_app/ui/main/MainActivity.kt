@@ -2,6 +2,7 @@ package com.example.task_manager_app.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task_manager_app.R
@@ -22,7 +24,9 @@ import com.example.task_manager_app.utils.generateDayItems
 import com.example.task_manager_app.viewmodel.TaskViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
 
 class MainActivity : AppCompatActivity() {
 
@@ -102,6 +106,11 @@ class MainActivity : AppCompatActivity() {
                 holidayContainer.visibility = View.GONE
             }
         }
+
+        viewModel.openCalendarEvent.observe(this) { task ->
+            openCalendarWithTask(task)
+        }
+
     }
 
     // méthode publique pour ouvrir l'éditeur pour une tâche existante
@@ -146,6 +155,34 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun openCalendarWithTask(task: Task) {
+        val intent: Intent = Intent(Intent.ACTION_INSERT).apply {
+            data = CalendarContract.Events.CONTENT_URI
+            putExtra(CalendarContract.Events.TITLE, task.title)
+            putExtra(CalendarContract.Events.DESCRIPTION, task.description)
+
+            val startMillis = toMillis(task.date, task.time)
+            putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
+
+            val endMillis = toMillis(task.date, task.time.plusMinutes(15))
+            putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endMillis)
+        }
+
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+
+    fun toMillis(date: LocalDate, time: LocalTime): Long {
+
+        val dateTime = LocalDateTime.of(date.year, date.month, date.dayOfMonth, time.hour, time.minute)
+
+        return dateTime
+            .atZone(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
     }
 
 

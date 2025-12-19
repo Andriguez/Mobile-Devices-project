@@ -15,12 +15,17 @@ import com.example.task_manager_app.model.Task
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.provider.CalendarContract
+import androidx.core.content.ContextCompat.startActivity
 
 class TaskAdapter(
     private var tasks: List<Task>,
     private val onTaskClick: (Task) -> Unit,
     private val onEdit: (Task) -> Unit,
     private val onDelete: (Task) -> Unit,
+    private val onAddCalendar: (Task) -> Unit,
 
     private val onTaskChecked: (Task, Boolean) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
@@ -68,10 +73,12 @@ class TaskAdapter(
             val popup = PopupMenu(v.context, v)
             popup.menu.add(0, 0, 0, v.context.getString(R.string.edit))
             popup.menu.add(0, 1, 1, v.context.getString(R.string.delete))
+            popup.menu.add(0, 2, 2, R.string.add_calendar)
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     0 -> onEdit(task)
                     1 -> onDelete(task)
+                    2 -> onAddCalendar(task)
                 }
                 true
             }

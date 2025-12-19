@@ -16,4 +16,6 @@
     <string name="add_tasks_btn">Ajouter une nouvelle tâche</string>
     <string name="readme_btn">Consultez la page Lisez-moi</string>
     <string name="action_home">Page d\'accueil</string>
+    <string name="add_calendar">Ajouter au calendrier</string>
+
 </resources>
