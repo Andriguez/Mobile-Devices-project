@@ -1,21 +1,20 @@
 package com.example.task_manager_app.ui.main
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.LocaleListCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task_manager_app.R
@@ -23,6 +22,7 @@ import com.example.task_manager_app.model.Task
 import com.example.task_manager_app.ui.landing.LandingActivity
 import com.example.task_manager_app.ui.readme.ReadmeActivity
 import com.example.task_manager_app.ui.taskcreation.AddTaskActivity
+import com.example.task_manager_app.utils.NotificationHelper
 import com.example.task_manager_app.utils.generateDayItems
 import com.example.task_manager_app.viewmodel.TaskViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -30,11 +30,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
-import android.widget.ImageButton
-import androidx.core.app.ActivityCompat
-import com.example.task_manager_app.utils.NotificationHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -114,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                         viewModel.editTask(id, title, description, dateStr, timeStr, done)
                     } else {
                         // New task created
-                        val newId = viewModel.addTask(title, description, dateStr, timeStr, done)
+                        viewModel.addTask(title, description, dateStr, timeStr, done)
 
                         // Schedule reminder 5 minutes before task time
                         val date = LocalDate.parse(dateStr)

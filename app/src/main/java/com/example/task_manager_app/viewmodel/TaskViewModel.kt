@@ -12,10 +12,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
 
-// 1. Changed from ViewModel() to AndroidViewModel(application)
 class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
-    // 2. Initialize repositories. Pass the application context to TaskRepository.
     private val repository: TaskRepository = TaskRepository(application)
     private val holidayRepository: HolidayRepository = HolidayRepository()
 
@@ -39,12 +37,12 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     private var allTasks: List<Task> = emptyList()
     private var selectedDate: LocalDate = LocalDate.now()
+
     private val _selectedHolidayName = MutableLiveData<String?>()
     val selectedHolidayName: LiveData<String?> = _selectedHolidayName
 
     fun loadTasks() {
         viewModelScope.launch {
-            // This now calls the Repository which uses context.getString()
             allTasks = repository.loadTasks()
             applyFilter()
         }
@@ -80,9 +78,20 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         val date = LocalDate.parse(dateStr)
         val time = LocalTime.parse(timeStr)
         val nextId = (allTasks.maxOfOrNull { it.id } ?: 0) + 1
-        val newTask = Task(nextId, title, description, date, time, done)
+
+        val newTask = Task(
+            id = nextId,
+            title = title,
+            description = description,
+            date = date,
+            time = time,
+            done = done
+        )
+
+        // Update in-memory list (and optionally repository)
         allTasks = allTasks + newTask
         applyFilter()
+        // repository.saveTask(newTask)  // if your repository supports saving
     }
 
     fun editTask(
@@ -95,7 +104,16 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     ) {
         val date = LocalDate.parse(dateStr)
         val time = LocalTime.parse(timeStr)
-        val updated = Task(id, title, description, date, time, done)
+
+        val updated = Task(
+            id = id,
+            title = title,
+            description = description,
+            date = date,
+            time = time,
+            done = done
+        )
+
         allTasks = allTasks.map { if (it.id == id) updated else it }
         applyFilter()
     }
@@ -111,7 +129,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
                 val map = holidayRepository.getPublicHolidaysWithNames(year, countryCode)
                 _holidays.value = map.keys.toSet()
                 _holidayNames.value = map
-            } catch (_: Exception) { }
+            } catch (_: Exception) {
+            }
         }
     }
 
@@ -119,13 +138,16 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val mergedSet = mutableSetOf<LocalDate>()
             val mergedNames = mutableMapOf<LocalDate, String>()
+
             for (y in years) {
                 try {
                     val map = holidayRepository.getPublicHolidaysWithNames(y, countryCode)
                     mergedSet.addAll(map.keys)
                     mergedNames.putAll(map)
-                } catch (_: Exception) { }
+                } catch (_: Exception) {
+                }
             }
+
             _holidays.value = mergedSet
             _holidayNames.value = mergedNames
         }

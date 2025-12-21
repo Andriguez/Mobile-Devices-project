@@ -1,9 +1,7 @@
 package com.example.task_manager_app.utils
 
 import android.Manifest
-import com.example.task_manager_app.R
 import android.app.AlarmManager
-import java.time.LocalDateTime
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -15,14 +13,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.task_manager_app.ui.main.MainActivity
-import java.time.ZoneId
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
+import com.example.task_manager_app.R
 
-/**
- * Helper class for managing notifications.
- * Handles notification channel creation and notification display.
- */
 class NotificationHelper(private val context: Context) {
 
     companion object {
@@ -36,10 +32,6 @@ class NotificationHelper(private val context: Context) {
         createNotificationChannel()
     }
 
-    /**
-     * Creates a notification channel for Android O and above.
-     * Required for showing notifications on API 26+.
-     */
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -52,12 +44,7 @@ class NotificationHelper(private val context: Context) {
         }
     }
 
-    /**
-     * Shows a notification for a task reminder.
-     * Checks for notification permission on API 33+.
-     */
     fun showTaskReminder(title: String, message: String) {
-        // Check permission for API 33+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(
                     context,
@@ -68,7 +55,6 @@ class NotificationHelper(private val context: Context) {
             }
         }
 
-        // Create intent for when notification is tapped
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -80,7 +66,6 @@ class NotificationHelper(private val context: Context) {
             PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Build notification
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle(title)
@@ -89,17 +74,12 @@ class NotificationHelper(private val context: Context) {
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
 
-        // Show notification
         with(NotificationManagerCompat.from(context)) {
             notify(NOTIFICATION_ID, builder.build())
         }
     }
 
-    /**
-     * Shows a simple test notification.
-     * Used to demonstrate notification functionality.
-     */
-    // Schedule notification 5 minutes before task time
+    // Schedule notification 5 minutes before task time (no taskId)
     fun scheduleTaskReminder5MinBefore(
         title: String,
         description: String,
@@ -123,7 +103,7 @@ class NotificationHelper(private val context: Context) {
 
         val pending = PendingIntent.getBroadcast(
             context,
-            0,  // use unique task id
+            0,   // single requestCode since you don't use task ids
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
@@ -139,8 +119,8 @@ class NotificationHelper(private val context: Context) {
 
     fun showTestNotification() {
         showTaskReminder(
-            title = context.getString(com.example.task_manager_app.R.string.notification_test_title),
-            message = context.getString(com.example.task_manager_app.R.string.notification_test_message)
+            title = context.getString(R.string.notification_test_title),
+            message = context.getString(R.string.notification_test_message)
         )
     }
 }
