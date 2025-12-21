@@ -58,4 +58,7 @@
     <string name="readme_btn">View Readme Page</string>
     <string name="action_home">Homepage</string>
     <string name="add_calendar">Add to Calendar</string>
+    <string name="notification_test_title">Task Manager Reminder</string>
+    <string name="notification_test_message">Don\'t forget to check your tasks!</string>
+
 </resources>

@@ -17,5 +17,7 @@
     <string name="readme_btn">Consultez la page Lisez-moi</string>
     <string name="action_home">Page d\'accueil</string>
     <string name="add_calendar">Ajouter au calendrier</string>
+    <string name="notification_test_title">Rappel Gestionnaire de Tâches</string>
+    <string name="notification_test_message">N\'oubliez pas de vérifier vos tâches!</string>
 
 </resources>
