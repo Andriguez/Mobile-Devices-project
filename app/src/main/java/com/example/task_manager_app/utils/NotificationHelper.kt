@@ -1,7 +1,7 @@
 package com.example.task_manager_app.utils
 
 import android.Manifest
-import android.R
+import com.example.task_manager_app.R
 import android.app.AlarmManager
 import java.time.LocalDateTime
 import android.app.NotificationChannel
@@ -82,7 +82,7 @@ class NotificationHelper(private val context: Context) {
 
         // Build notification
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_dialog_info)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
