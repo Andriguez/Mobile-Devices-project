@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Task Manager</string>
     <string name="action_settings">Settings</string>
     <string name="add_task_description">Add a new task</string>
@@ -10,52 +10,52 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="today">Today</string>
-    <string name="save" translatable="false">Save</string>
-    <string name="cancel" translatable="false">Cancel</string>
-    <string name="edit" translatable="false">Edit</string>
-    <string name="delete" translatable="false">Delete</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
-    <string name="title" translatable="false">Title</string>
-    <string name="description" translatable="false">Description</string>
-    <string name="select_date" translatable="false">Select the date</string>
-    <string name="select_time" translatable="false">Select the time</string>
-    <string name="done" translatable="false">Done</string>
-    <string name="enter_title" translatable="false">Enter Title</string>
-    <string name="holiday_label" translatable="false">Holiday</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="select_date">Select the date</string>
+    <string name="select_time">Select the time</string>
+    <string name="done">Done</string>
+    <string name="enter_title">Enter Title</string>
+    <string name="holiday_label">Holiday</string>
 
     <string name="view_done">View done tasks (%1$d)</string>
     <string name="hide_done">Hide done tasks</string>
 
-    <string name="readme_title" translatable="false">Readme</string>
-
-    <string name="readme_content" translatable="false">
-        \n\nPROJECT DESCRIPTION\n\n
-        Welcome to the Task Manager App application, a task manager designed to help you organize and stick to your daily commitments.
-        \n\nThis Android application allows users to create, modify, and track their tasks efficiently.
-        \n\n**KEY FEATURES**\n
-        \u2022 Task Addition: Quick creation of new tasks (via the FAB button).\n
-        \u2022 Editing &amp; Deletion: Updating and removal of existing tasks.\n
-        \u2022 Task Filtering: Distinct viewing of completed tasks and to-do tasks.\n
-        \u2022 Reminders: Association of a time and due date with each task.\n
-        \u2022 Calendar Integration: Option to add a task as a reminder in the native calendar (via the "Open With" option).
-        \n\nTECHNICAL INFORMATION\n
-        \u2022 Platform: Android\n
-        \u2022 Language: Kotlin\n
-        \u2022 Architecture: The application follows the MVVM (Model-View-ViewModel) architecture for clear separation of concerns, better testability, and simplified maintenance.
-        \u2022 Data Management: Task data is handled via a Repository which centralizes persistence operations (future integration possible with Room Database).
-        \u2022 Navigation &amp; UI: Uses `RecyclerView` for list display and `Material Components` for UI elements (like the Floating Action Button).
-        \u2022 Reminders: Potential use of WorkManager for reliable notification scheduling or `AlarmManager` for exact time-based reminders.
-        \n\n**DEVELOPMENT TEAM**\n
-        \u2022 Developer: Chloe DAUNAS\n
-        \u2022 Developer: Marina Vanita FOUODJO NGNITEDEMO\n
-        \u2022 Developer: Andi (B. A.) RODRIGUEZ MACUACE\n
-        \u2022 Developer: Monisha CLEMENCEAU\n\n
-
-    </string>
+    <string name="readme_title">Readme</string>
+    <string name="action_readme" translatable="false">README</string>
+    <string name="readme_content" tools:ignore="MissingTranslation"><![CDATA[
+    \n\n<b>PROJECT DESCRIPTION</b>\n\n
+    Welcome to the Task Manager App application, a task manager designed to help you organize and stick to your daily commitments.
+    \n\nThis Android application allows users to create, modify, and track their tasks efficiently.
+    \n\n<b>KEY FEATURES</b>\n
+    \u2022 Task Addition: Quick creation of new tasks (via the FAB button).\n
+    \u2022 Editing & Deletion: Updating and removal of existing tasks.\n
+    \u2022 Task Filtering: Distinct viewing of completed tasks and to-do tasks.\n
+    \u2022 Reminders: Association of a time and due date with each task.\n
+    \u2022 Calendar Integration: Option to add a task as a reminder in the native calendar.
+    \n\n<b>TECHNICAL INFORMATION</b>\n
+    \u2022 Platform: Android\n
+    \u2022 Language: Kotlin\n
+    \u2022 Architecture: MVVM
+    \n\n<b>DEVELOPMENT TEAM</b>\n
+    \u2022 Developer: Chloe DAUNAS\n
+    \u2022 Developer: Marina Vanita FOUODJO NGNITEDEMO\n
+    \u2022 Developer: Andi (B. A.) RODRIGUEZ MACUACE\n
+    \u2022 Developer: Monisha CLEMENCEAU\n\n
+]]></string>
     <string name="welcome_text">Welcome to Task\'it</string>
     <string name="view_tasks_btn">View My Tasks</string>
     <string name="add_tasks_btn">Add New Task</string>
     <string name="readme_btn">View Readme Page</string>
     <string name="action_home">Homepage</string>
     <string name="add_calendar">Add to Calendar</string>
+    <string name="task_milk_title">To Buy Milk</string>
+    <string name="task_milk_desc">Supermarket, milk aisle</string>
+    <string name="task_alice_title">Call Alice</string>
+    <string name="task_alice_desc">Reminder about the project</string>
 </resources>
