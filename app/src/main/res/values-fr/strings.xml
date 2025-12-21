@@ -2,13 +2,14 @@
 <resources>
     <string name="my_tasks">Mes tâches</string>
     <string name="add_task_description">Ajouter une nouvelle tâche</string>
-    <string name="app_name">Task Manager</string>
+    <string name="app_name">Gestion de tâches</string>
     <string name="action_settings">Settings</string>
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="view_done">>Voir les tâches terminées (%1$d)</string>
+    <string name="holiday_label">Vacance</string>
+    <string name="view_done">Voir les tâches terminées (%1$d)</string>
     <string name="hide_done">Masquer les tâches terminées</string>
     <string name="today">Ajd</string>
     <string name="welcome_text">Bienvenue sur Task\'it</string>
@@ -17,6 +18,38 @@
     <string name="readme_btn">Consultez la page Lisez-moi</string>
     <string name="action_home">Page d\'accueil</string>
     <string name="add_calendar">Ajouter au calendrier</string>
+    <string name="save">Enregistrer</string>
+    <string name="cancel">Annuler</string>
+    <string name="edit">Modifier</string>
+    <string name="delete">Suprimer</string>
+    <string name="title">Titre</string>
+    <string name="description">Description</string>
+    <string name="select_date">Sélectionnez la date</string>
+    <string name="select_time">Sélectionnez l\'heure</string>
+    <string name="done">Terminé</string>
+    <string name="enter_title">Entrez le titre</string>
+    <string name="readme_title">Lisez-moi</string>
+    <string name="task_milk_title">Acheter du lait</string>
+    <string name="task_milk_desc">Supermarché, rayon crémerie</string>
+    <string name="task_alice_title">Appeler Alice</string>
+    <string name="task_alice_desc">Rappel concernant le projet</string>
+    <string name="action_readme">Lisez-moi</string>
+    <string name="readme_content"><![CDATA[
+    \n\n<b>DESCRIPTION DU PROJET</b>\n\n
+    Bienvenue dans l\'application Task Manager, un gestionnaire de tâches conçu pour vous aider à organiser et à respecter vos engagements quotidiens.
+    \n\nCette application Android permet aux utilisateurs de créer, modifier et suivre leurs tâches efficacement.
+    \n\n<b>FONCTIONNALITÉS CLÉS</b>\n
+    \u2022 Ajout de tâches : Création rapide de nouvelles tâches (bouton FAB).\n
+    \u2022 Édition et suppression : Mise à jour et suppression des tâches.\n
+    \u2022 Filtrage : Visualisation distincte des tâches terminées et à faire.\n
+    \n\n<b>ÉQUIPE DE DÉVELOPPEMENT</b>\n
+    \u2022 Développeur : Chloe DAUNAS\n
+    \u2022 Développeur : Marina Vanita FOUODJO NGNITEDEMO\n
+    \u2022 Développeur : Andi (B. A.) RODRIGUEZ MACUACE\n
+    \u2022 Développeur : Monisha CLEMENCEAU\n\n
+]]></string>
+    <string name="language_french">Français</string>
+    <string name="language_english">Anglais</string>
     <string name="notification_test_title">Rappel Gestionnaire de Tâches</string>
     <string name="notification_test_message">N\'oubliez pas de vérifier vos tâches!</string>
 

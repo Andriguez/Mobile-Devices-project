@@ -1,8 +1,9 @@
 package com.example.task_manager_app.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.task_manager_app.data.HolidayRepository
 import com.example.task_manager_app.data.TaskRepository
@@ -11,26 +12,28 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
 
-class TaskViewModel(
-    private val repository: TaskRepository = TaskRepository(),
-    private val holidayRepository: HolidayRepository = HolidayRepository(),
-    private val _openCalendarEvent: MutableLiveData<Task> = MutableLiveData<Task>(),
+// 1. Changed from ViewModel() to AndroidViewModel(application)
+class TaskViewModel(application: Application) : AndroidViewModel(application) {
+
+    // 2. Initialize repositories. Pass the application context to TaskRepository.
+    private val repository: TaskRepository = TaskRepository(application)
+    private val holidayRepository: HolidayRepository = HolidayRepository()
+
+    private val _openCalendarEvent = MutableLiveData<Task>()
     val openCalendarEvent: LiveData<Task> = _openCalendarEvent
-) : ViewModel() {
 
     private val _tasks = MutableLiveData<List<Task>>()
     val tasks: LiveData<List<Task>> = _tasks
+
     private val _activeTasks = MutableLiveData<List<Task>>()
     val activeTasks: LiveData<List<Task>> = _activeTasks
 
     private val _doneTasks = MutableLiveData<List<Task>>()
     val doneTasks: LiveData<List<Task>> = _doneTasks
 
-    // LiveData des dates de jours fériés (Set)
     private val _holidays = MutableLiveData<Set<LocalDate>>(emptySet())
     val holidays: LiveData<Set<LocalDate>> = _holidays
 
-    // map date -> name (vide pour l'instant, compatible avec UI qui attend holidayNames)
     private val _holidayNames = MutableLiveData<Map<LocalDate, String>>(emptyMap())
     val holidayNames: LiveData<Map<LocalDate, String>> = _holidayNames
 
@@ -39,9 +42,9 @@ class TaskViewModel(
     private val _selectedHolidayName = MutableLiveData<String?>()
     val selectedHolidayName: LiveData<String?> = _selectedHolidayName
 
-
     fun loadTasks() {
         viewModelScope.launch {
+            // This now calls the Repository which uses context.getString()
             allTasks = repository.loadTasks()
             applyFilter()
         }
@@ -102,20 +105,16 @@ class TaskViewModel(
         applyFilter()
     }
 
-    // charge les jours fériés pour une année (HolidayRepository renvoie Set<LocalDate>)
     fun loadHolidays(year: Int = LocalDate.now().year, countryCode: String = "FR") {
         viewModelScope.launch {
             try {
                 val map = holidayRepository.getPublicHolidaysWithNames(year, countryCode)
                 _holidays.value = map.keys.toSet()
                 _holidayNames.value = map
-            } catch (_: Exception) {
-                // ignore
-            }
+            } catch (_: Exception) { }
         }
     }
 
-    // charge pour plusieurs années et fusionne les ensembles
     fun loadHolidaysForYears(years: Set<Int>, countryCode: String = "FR") {
         viewModelScope.launch {
             val mergedSet = mutableSetOf<LocalDate>()
@@ -125,9 +124,7 @@ class TaskViewModel(
                     val map = holidayRepository.getPublicHolidaysWithNames(y, countryCode)
                     mergedSet.addAll(map.keys)
                     mergedNames.putAll(map)
-                } catch (_: Exception) {
-                    // protège contre une année qui échoue
-                }
+                } catch (_: Exception) { }
             }
             _holidays.value = mergedSet
             _holidayNames.value = mergedNames

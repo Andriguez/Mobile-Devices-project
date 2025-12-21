@@ -7,7 +7,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="50dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -54,6 +54,26 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
+
+        <ImageButton
+            android:id="@+id/btnEn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/language_english"
+            android:src="@drawable/ic_flag_en" />
+
+        <ImageButton
+            android:id="@+id/btnFr"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/language_french"
+            android:src="@drawable/ic_flag_france" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -1,5 +1,6 @@
 package com.example.task_manager_app.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.provider.CalendarContract
@@ -26,13 +27,16 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
-
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
+import android.widget.ImageButton
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: TaskViewModel by viewModels()
     private lateinit var addTaskLauncher: ActivityResultLauncher<Intent>
     private lateinit var notificationHelper: NotificationHelper
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -57,7 +61,21 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.title = getString(R.string.my_tasks)
+        val btnEn = findViewById<ImageButton>(R.id.btnEn)
+        val btnFr = findViewById<ImageButton>(R.id.btnFr)
 
+        btnEn.setOnClickListener {
+            // Switch app to English
+            val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags("en")
+            AppCompatDelegate.setApplicationLocales(appLocale)
+        }
+
+        btnFr.setOnClickListener {
+            // Switch app to French
+            val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags("fr")
+            AppCompatDelegate.setApplicationLocales(appLocale)
+            viewModel.loadTasks()
+        }
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, TaskListFragment())
