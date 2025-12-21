@@ -36,16 +36,14 @@ class NotificationHelper(private val context: Context) {
      * Required for showing notifications on API 26+.
      */
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance).apply {
-                description = CHANNEL_DESCRIPTION
-            }
-
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE)
-                    as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance).apply {
+            description = CHANNEL_DESCRIPTION
         }
+
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE)
+                as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
     /**
