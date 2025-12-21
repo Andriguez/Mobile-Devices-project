@@ -1,0 +1,100 @@
+package com.example.task_manager_app.ui.main
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
+import androidx.recyclerview.widget.RecyclerView
+import com.example.task_manager_app.R
+import com.example.task_manager_app.model.DayItem
+import com.example.task_manager_app.utils.toShortMonth
+import java.time.LocalDate
+import java.util.Locale
+
+class DayAdapter(
+    private val days: List<DayItem>,
+    private val onDaySelected: (LocalDate) -> Unit
+
+) : RecyclerView.Adapter<DayAdapter.DayViewHolder>() {
+
+    private var selectedDate: LocalDate? = null
+    private var holidays: Set<LocalDate> = emptySet()
+    private var holidayNames: Map<LocalDate, String> = emptyMap()
+
+
+    fun setSelectedDate(date: LocalDate) {
+        selectedDate = date
+        notifyDataSetChanged()
+    }
+
+    fun setHolidays(h: Set<LocalDate>) {
+        holidays = h
+        notifyDataSetChanged()
+    }
+
+    fun setHolidayNames(map: Map<LocalDate, String>) {
+        holidayNames = map
+        notifyDataSetChanged()
+    }
+
+    inner class DayViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val root: View = view.findViewById(R.id.dayRoot)
+        val day: TextView = view.findViewById(R.id.textDay)
+        val date: TextView = view.findViewById(R.id.textDate)
+        val todayLabel: TextView = view.findViewById(R.id.textTodayLabel)
+
+        val month: TextView = view.findViewById(R.id.textMonth)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_day, parent, false)
+        return DayViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
+        val dayItem = days[position]
+        val localDate = dayItem.date
+        val today = LocalDate.now()
+
+        if (localDate == today) {
+            holder.todayLabel.visibility = View.VISIBLE
+        } else {
+            holder.todayLabel.visibility = View.GONE
+            holder.month.text = localDate.toShortMonth(Locale.ENGLISH)
+        }
+
+        holder.day.text = localDate.dayOfWeek.name.take(3)
+        holder.date.text = localDate.dayOfMonth.toString()
+
+        val isHoliday = holidays.contains(localDate)
+        if (isHoliday) {
+            // couleur bleue pour les jours fériés
+            val blue = "#1976D2".toColorInt() // material blue 700
+            holder.day.setTextColor(blue)
+            holder.date.setTextColor(blue)
+            holder.month.setTextColor(blue)
+        } else {
+            val normal = ContextCompat.getColor(holder.itemView.context, R.color.black)
+            holder.day.setTextColor(normal)
+            holder.date.setTextColor(normal)
+            holder.month.setTextColor(normal)
+
+        }
+
+        val isSelected = localDate == selectedDate
+        holder.root.setBackgroundResource(
+            if (isSelected) R.drawable.day_bg_selected
+            else R.drawable.day_bg_normal
+        )
+
+        holder.itemView.setOnClickListener {
+            setSelectedDate(localDate)
+            onDaySelected(localDate)
+        }
+    }
+
+    override fun getItemCount() = days.size
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_tasks">Mes tâches</string>
+    <string name="add_task_description">Ajouter une nouvelle tâche</string>
+    <string name="app_name">Task Manager</string>
+    <string name="action_settings">Settings</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="view_done">>Voir les tâches terminées (%1$d)</string>
+    <string name="hide_done">Masquer les tâches terminées</string>
+    <string name="today">Ajd</string>
+    <string name="welcome_text">Bienvenue sur Task\'it</string>
+    <string name="view_tasks_btn">Voir mes tâches</string>
+    <string name="add_tasks_btn">Ajouter une nouvelle tâche</string>
+    <string name="readme_btn">Consultez la page Lisez-moi</string>
+    <string name="action_home">Page d\'accueil</string>
+    <string name="add_calendar">Ajouter au calendrier</string>
+
+</resources>
