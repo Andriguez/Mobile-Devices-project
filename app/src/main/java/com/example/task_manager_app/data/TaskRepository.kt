@@ -35,6 +35,14 @@ class TaskRepository(private val context: Context) { // 1. Added Context here
                     context.getString(R.string.task_milk_desc),
                     LocalDate.of(2025, 12, 25),
                     LocalTime.of(9, 30)
+                ),
+                Task(
+                    7,
+                    "Send Project",
+                    "Send email with project code",
+                    LocalDate.now(),
+                    LocalTime.of(23, 30),
+                    true
                 )
             )
         }

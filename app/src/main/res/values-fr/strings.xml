@@ -9,7 +9,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="holiday_label">Vacance</string>
-    <string name="view_done">>Voir les tâches terminées (%1$d)</string>
+    <string name="view_done">Voir les tâches terminées (%1$d)</string>
     <string name="hide_done">Masquer les tâches terminées</string>
     <string name="today">Ajd</string>
     <string name="welcome_text">Bienvenue sur Task\'it</string>
@@ -48,4 +48,6 @@
     \u2022 Développeur : Andi (B. A.) RODRIGUEZ MACUACE\n
     \u2022 Développeur : Monisha CLEMENCEAU\n\n
 ]]></string>
+    <string name="language_french">Français</string>
+    <string name="language_english">Anglais</string>
 </resources>

@@ -58,4 +58,6 @@
     <string name="task_milk_desc">Supermarket, milk aisle</string>
     <string name="task_alice_title">Call Alice</string>
     <string name="task_alice_desc">Reminder about the project</string>
+    <string name="language_french">French</string>
+    <string name="language_english">English</string>
 </resources>
