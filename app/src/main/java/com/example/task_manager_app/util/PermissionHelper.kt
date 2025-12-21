@@ -11,8 +11,7 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.todolistapp.MainActivity
-import com.example.todolistapp.R
+
 
 /**
  * Helper class for managing notifications.
