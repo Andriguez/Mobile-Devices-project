@@ -50,4 +50,7 @@
 ]]></string>
     <string name="language_french">Français</string>
     <string name="language_english">Anglais</string>
+    <string name="notification_test_title">Rappel Gestionnaire de Tâches</string>
+    <string name="notification_test_message">N\'oubliez pas de vérifier vos tâches!</string>
+
 </resources>

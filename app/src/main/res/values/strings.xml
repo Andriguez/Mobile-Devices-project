@@ -60,4 +60,7 @@
     <string name="task_alice_desc">Reminder about the project</string>
     <string name="language_french">French</string>
     <string name="language_english">English</string>
+    <string name="notification_test_title">Task Manager Reminder</string>
+    <string name="notification_test_message">Don\'t forget to check your tasks!</string>
+
 </resources>
