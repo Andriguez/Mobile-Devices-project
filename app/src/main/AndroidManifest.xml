@@ -41,6 +41,7 @@
         <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".ui.taskcreation.AddTaskActivity" />
         <activity android:name=".ui.readme.ReadmeActivity" />
+        <receiver android:name=".utils.ReminderReceiver" />
     </application>
 
 </manifest>

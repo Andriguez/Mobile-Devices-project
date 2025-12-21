@@ -1,7 +1,10 @@
 package com.example.task_manager_app.ui.main
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.view.Menu
@@ -30,52 +33,40 @@ import java.time.ZoneId
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import android.widget.ImageButton
+import androidx.core.app.ActivityCompat
+import com.example.task_manager_app.utils.NotificationHelper
+
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: TaskViewModel by viewModels()
     private lateinit var addTaskLauncher: ActivityResultLauncher<Intent>
     private lateinit var notificationHelper: NotificationHelper
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Initialize helper once
         notificationHelper = NotificationHelper(this)
-
-// request permission on Android 13+
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                    1001
-                )
-            }
-        }
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.title = getString(R.string.my_tasks)
+
         val btnEn = findViewById<ImageButton>(R.id.btnEn)
         val btnFr = findViewById<ImageButton>(R.id.btnFr)
 
         btnEn.setOnClickListener {
-            // Switch app to English
             val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags("en")
             AppCompatDelegate.setApplicationLocales(appLocale)
         }
 
         btnFr.setOnClickListener {
-            // Switch app to French
             val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags("fr")
             AppCompatDelegate.setApplicationLocales(appLocale)
             viewModel.loadTasks()
         }
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, TaskListFragment())
@@ -89,7 +80,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         dayAdapter.setSelectedDate(LocalDate.now())
-
         viewModel.loadTasks()
 
         daysRecycler.layoutManager =
@@ -107,6 +97,7 @@ class MainActivity : AppCompatActivity() {
         val years = days.map { it.date.year }.toSet()
         viewModel.loadHolidaysForYears(years, countryCode = "FR")
 
+        // Handle result from AddTaskActivity
         addTaskLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
@@ -117,10 +108,23 @@ class MainActivity : AppCompatActivity() {
                     val timeStr = data.getStringExtra("time") ?: LocalTime.now().toString()
                     val done = data.getBooleanExtra("done", false)
                     val id = data.getIntExtra("id", -1)
+
                     if (id != -1) {
+                        // Existing task edited
                         viewModel.editTask(id, title, description, dateStr, timeStr, done)
                     } else {
-                        viewModel.addTask(title, description, dateStr, timeStr, done)
+                        // New task created
+                        val newId = viewModel.addTask(title, description, dateStr, timeStr, done)
+
+                        // Schedule reminder 5 minutes before task time
+                        val date = LocalDate.parse(dateStr)
+                        val time = LocalTime.parse(timeStr)
+                        notificationHelper.scheduleTaskReminder5MinBefore(
+                            title = title,
+                            description = description,
+                            date = date,
+                            time = time
+                        )
                     }
                 }
             }
@@ -146,10 +150,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.openCalendarEvent.observe(this) { task ->
             openCalendarWithTask(task)
         }
-
     }
 
-    // méthode publique pour ouvrir l'éditeur pour une tâche existante
     fun openEditTask(task: Task) {
         val intent = Intent(this, AddTaskActivity::class.java).apply {
             putExtra("id", task.id)
@@ -163,36 +165,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        // Assuming R.menu.menu_main is your main menu file
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
-    /**
-     * Handles item clicks on the ActionBar menu.
-     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> {
-                // R.id.action_settings is already defined in your strings.xml
-                // Handle settings intent here if needed
-                true
-            }
-
+            R.id.action_settings -> true
             R.id.action_readme -> {
-                // Launch the ReadmeActivity
-                val intent = Intent(this, ReadmeActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, ReadmeActivity::class.java))
                 true
             }
-
             R.id.action_home -> {
-                //Launch LandingPage
-                val intent = Intent(this, LandingActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, LandingActivity::class.java))
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -216,15 +203,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun toMillis(date: LocalDate, time: LocalTime): Long {
-
-        val dateTime =
-            LocalDateTime.of(date.year, date.month, date.dayOfMonth, time.hour, time.minute)
-
+        val dateTime = LocalDateTime.of(date.year, date.month, date.dayOfMonth, time.hour, time.minute)
         return dateTime
             .atZone(ZoneId.systemDefault())
             .toInstant()
             .toEpochMilli()
     }
-
-
 }

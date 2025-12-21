@@ -1,6 +1,9 @@
-package com.example.task_manager_app.util
+package com.example.task_manager_app.utils
 
 import android.Manifest
+import android.R
+import android.app.AlarmManager
+import java.time.LocalDateTime
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -12,7 +15,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.task_manager_app.ui.main.MainActivity
-import com.example.task_manager_app.R
+import java.time.ZoneId
+import java.time.LocalDate
+import java.time.LocalTime
 
 /**
  * Helper class for managing notifications.
@@ -36,14 +41,15 @@ class NotificationHelper(private val context: Context) {
      * Required for showing notifications on API 26+.
      */
     private fun createNotificationChannel() {
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance).apply {
-            description = CHANNEL_DESCRIPTION
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance).apply {
+                description = CHANNEL_DESCRIPTION
+            }
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
-
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE)
-                as NotificationManager
-        notificationManager.createNotificationChannel(channel)
     }
 
     /**
@@ -76,7 +82,7 @@ class NotificationHelper(private val context: Context) {
 
         // Build notification
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setSmallIcon(R.drawable.ic_dialog_info)
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -93,10 +99,48 @@ class NotificationHelper(private val context: Context) {
      * Shows a simple test notification.
      * Used to demonstrate notification functionality.
      */
+    // Schedule notification 5 minutes before task time
+    fun scheduleTaskReminder5MinBefore(
+        title: String,
+        description: String,
+        date: LocalDate,
+        time: LocalTime
+    ) {
+        val taskDateTime = LocalDateTime.of(date, time)
+        val notifyDateTime = taskDateTime.minusMinutes(5)
+
+        val triggerMillis = notifyDateTime
+            .atZone(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
+
+        if (triggerMillis <= System.currentTimeMillis()) return
+
+        val intent = Intent(context, ReminderReceiver::class.java).apply {
+            putExtra("taskTitle", title)
+            putExtra("taskDescription", description)
+        }
+
+        val pending = PendingIntent.getBroadcast(
+            context,
+            0,  // use unique task id
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val alarmManager =
+            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            triggerMillis,
+            pending
+        )
+    }
+
     fun showTestNotification() {
         showTaskReminder(
-            title = context.getString(R.string.notification_test_title),
-            message = context.getString(R.string.notification_test_message)
+            title = context.getString(com.example.task_manager_app.R.string.notification_test_title),
+            message = context.getString(com.example.task_manager_app.R.string.notification_test_message)
         )
     }
 }
